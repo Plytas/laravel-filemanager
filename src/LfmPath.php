@@ -96,7 +96,7 @@ class LfmPath
     public function folders()
     {
         $all_folders = array_map(function ($directory_path) {
-            return $this->pretty($directory_path);
+            return $this->pretty($directory_path, true);
         }, $this->storage->directories());
 
         $folders = array_filter($all_folders, function ($directory) {
@@ -115,11 +115,12 @@ class LfmPath
         return $this->sortByColumn($files);
     }
 
-    public function pretty($item_path)
+    public function pretty($item_path, bool $isDirectory = false)
     {
         return Container::getInstance()->makeWith(LfmItem::class, [
             'lfm' => (clone $this)->setName($this->helper->getNameFromPath($item_path)),
-            'helper' => $this->helper
+            'helper' => $this->helper,
+			'isDirectory' => $isDirectory
         ]);
     }
 
